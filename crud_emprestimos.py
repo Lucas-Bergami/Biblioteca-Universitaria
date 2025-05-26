@@ -29,3 +29,31 @@ def deletar_emprestimo(id_emprestimo):
     finally:
         cursor.close()
         conexao.close()
+
+def listar_emprestimos():
+    conexao = conectar()
+    cursor = conexao.cursor(dictionary=True)
+    try:
+        cursor.execute("SELECT * FROM Emprestimos")
+        emprestimos = cursor.fetchall()
+        return emprestimos
+    except mysql.connector.Error as err:
+        print(f"Erro ao listar empréstimos: {err}")
+    finally:
+        cursor.close()
+        conexao.close()
+
+def atualizar_emprestimo(id_emprestimo, data_devolucao_real):
+    conexao = conectar()
+    cursor = conexao.cursor()
+    try:
+        sql = "UPDATE Emprestimos SET data_devolucao_real = %s WHERE id_emprestimo = %s"
+        valores = (data_devolucao_real, id_emprestimo)
+        cursor.execute(sql, valores)
+        conexao.commit()
+        print("Empréstimo atualizado com sucesso!")
+    except mysql.connector.Error as err:
+        print(f"Erro ao atualizar empréstimo: {err}")
+    finally:
+        cursor.close()
+        conexao.close()
