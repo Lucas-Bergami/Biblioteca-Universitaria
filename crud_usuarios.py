@@ -27,3 +27,18 @@ def listar_usuarios():
     finally:
         cursor.close()
         conexao.close()
+
+def atualizar_usuario(id_usuario, nome, endereco, telefone, status):
+    conexao = conectar()
+    cursor = conexao.cursor()
+    try:
+        sql = "UPDATE Usuarios SET nome = %s, endereco = %s, telefone = %s, status = %s WHERE id_usuario = %s"
+        valores = (nome, endereco, telefone, status, id_usuario)
+        cursor.execute(sql, valores)
+        conexao.commit()
+        print("Usuário atualizado com sucesso!")
+    except mysql.connector.Error as err:
+        print(f"Erro ao atualizar usuário: {err}")
+    finally:
+        cursor.close()
+        conexao.close()
